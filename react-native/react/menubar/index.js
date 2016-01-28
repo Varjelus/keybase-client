@@ -119,6 +119,11 @@ class Menubar extends Component {
     this.closeMenubar()
   }
 
+  logIn () {
+    // TODO: Trigger login
+    this.closeMenubar()
+  }
+
   showHelp () {
     ipcRenderer.send('openURL', 'help')
     this.closeMenubar()
@@ -156,6 +161,7 @@ class Menubar extends Component {
       showMain={() => this.showMain()}
       showHelp={() => this.showHelp()}
       showUser={user => this.showUser(user)}
+      logIn={() => this.logIn()}
       quit={() => remote.app.quit()}
       folders={folders}
       loading={this.state.loading && !!username}

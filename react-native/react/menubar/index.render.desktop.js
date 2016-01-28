@@ -9,7 +9,7 @@ import {intersperse} from '../util/arrays'
 import {parseFolderNameToUsers, canonicalizeUsernames, stripPublicTag} from '../util/kbfs'
 
 import {globalStyles, globalColors} from '../styles/style-guide'
-import {Text, Input, Terminal, Icon} from '../common-adapters/index'
+import {Button, Text, Input, Icon} from '../common-adapters/index'
 
 import {CircularProgress} from 'material-ui'
 import {cleanup, allowLoggedOut as allowLoggedOutKBFS} from '../util/kbfs'
@@ -56,19 +56,14 @@ const Footer = props => {
   )
 }
 
-const LoggedoutMessage = props => {
+const LogInPrompt = props => {
+  const logIn: () => void = props.logIn
   return (
     <div style={{...globalStyles.flexBoxColumn, backgroundColor: globalColors.grey5}}>
-      <i style={{alignSelf: 'center', color: globalColors.lowRiskWarning, marginTop: 12}} className='fa fa-exclamation-triangle'></i>
-      <Text type='Body' small style={{alignSelf: 'center', marginTop: 6}}>You're logged out!</Text>
-      <Text type='Body' small style={{marginTop: 23, marginBottom: 5, marginLeft: 10}}>From the terminal:</Text>
-      <Terminal>
-        <Text type='TerminalCommand'>keybase login</Text>
-        <Text type='TerminalEmpty'/>
-        <Text type='TerminalComment'>or if you're new to Keybase:</Text>
-        <Text type='TerminalCommand'>keybase signup</Text>
-      </Terminal>
-      {allowLoggedOutKBFS && <Text type='Body' small style={{marginTop: 22, marginBottom: 7, marginLeft: 10}}>Or access someone's public folder:</Text>}
+        <i style={{alignSelf: 'center', color: globalColors.lowRiskWarning, marginTop: 12}} className='fa fa-exclamation-triangle'/>
+        <Text type='Body' small style={{alignSelf: 'center', marginTop: 6}}>You're logged out!</Text>
+        <Button primary label='Log In' onClick={logIn} style={{alignSelf: 'center', minWidth: 160, marginTop: 12, marginRight: 0}}/>
+        {allowLoggedOutKBFS && <Text type='Body' small style={{marginTop: 22, marginBottom: 7, marginLeft: 10}}>Or access someone's public folder:</Text>}
     </div>
   )
 }
@@ -82,6 +77,7 @@ export default class Render extends Component {
     showMain: () => void,
     showHelp: () => void,
     showUser: (username: ?string) => void,
+    logIn: () => void,
     quit: () => void,
     openingButtonInfo: {
       text: string,
@@ -94,13 +90,13 @@ export default class Render extends Component {
   };
 
   render (): ReactElement {
-    const {openKBFS, openKBFSPublic, openKBFSPrivate, showMain, showHelp, showUser, quit, username, loggedIn} = this.props
+    const {openKBFS, openKBFSPublic, openKBFSPrivate, showMain, showHelp, showUser, logIn, quit, username, loggedIn} = this.props
 
     return (
       <div style={styles.container}>
         <div style={styles.body}>
           <Header openKBFS={openKBFS} showUser={() => showUser(username)}/>
-          {!loggedIn && <LoggedoutMessage />}
+          {!loggedIn && <LogInPrompt logIn={logIn} />}
           <FolderList loading={this.props.loading} username={this.props.username} openKBFSPublic={openKBFSPublic} openKBFSPrivate={openKBFSPrivate} folders={this.props.folders} loggedIn={loggedIn}/>
           <Footer debug={this.props.debug || false} showHelp={showHelp} quit={quit} showMain={showMain}/>
         </div>
