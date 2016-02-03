@@ -104,7 +104,13 @@ if (!toRun) {
   process.exit(1)
 }
 
-const info = inject(toRun())
+let info = toRun()
+
+if (!info) {
+  process.exit(0)
+}
+
+info = inject(info)
 
 if (!info.shell) {
   process.exit(1)
