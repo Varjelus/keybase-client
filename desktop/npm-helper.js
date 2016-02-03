@@ -64,7 +64,7 @@ const commands = {
     return {
       nodeEnv: 'production',
       nodePathDesktop: true,
-      shell: 'NODE_ENV=production node package.js'
+      shell: 'node package.js'
     }
   },
   'hot-server': () => {
