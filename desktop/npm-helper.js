@@ -96,10 +96,10 @@ const commands = {
 
 function fixupSymlinks () {
   console.log('Fixing up shared symlinks')
-  console.log(execSync('del shared', {cwd: path.join(process.cwd(), '.')}))
-  console.log(execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '.')}))
-  console.log(execSync('del shared', {cwd: path.join(process.cwd(), '..', 'react-native')}))
-  console.log(execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '..', 'react-native')}))
+  console.log(execSync('del shared', {cwd: path.join(process.cwd(), '.')}).toString())
+  console.log(execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '.')}).toString())
+  console.log(execSync('del shared', {cwd: path.join(process.cwd(), '..', 'react-native')}).toString())
+  console.log(execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '..', 'react-native')}).toString())
 }
 
 const toRun = commands[command]
