@@ -96,8 +96,8 @@ const commands = {
 
 function fixupSymlinks () {
   console.log('Fixing up shared symlinks')
-  execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '.')})
-  execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '..', 'react-native')})
+  execSync('del shared && mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '.')})
+  execSync('del shared && mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '..', 'react-native')})
 }
 
 const toRun = commands[command]
