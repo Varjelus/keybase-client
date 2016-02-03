@@ -3,8 +3,7 @@
 import path from 'path'
 import {execSync} from 'child_process'
 
-const params = process.argv.slice(2)
-const command = params[0]
+const [,,command, ...rest] = process.argv
 
 const inject = info => {
   let temp = {
@@ -21,6 +20,10 @@ const inject = info => {
 
   if (info.nodePathDesktop) {
     temp.env.NODE_PATH = path.join(process.cwd(), 'node_modules')
+  }
+
+  if (rest.length && temp.shell) {
+    temp.shell = temp.shell + ' ' + rest.join(' ')
   }
 
   return temp
