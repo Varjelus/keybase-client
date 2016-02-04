@@ -88,7 +88,7 @@ const commands = {
     return {shell: './node_modules/.bin/electron-rebuild'}
   },
   'postinstall': () => {
-    if (process.platform === 'windows') {
+    if (process.platform === 'win32') {
       fixupSymlinks()
     } else {
       console.log('hello world')
