@@ -96,10 +96,18 @@ const commands = {
 
 function fixupSymlinks () {
   console.log('Fixing up shared symlinks')
-  console.log(execSync('del shared', {cwd: path.join(process.cwd(), '.')}).toString())
-  console.log(execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '.')}).toString())
-  console.log(execSync('del shared', {cwd: path.join(process.cwd(), '..', 'react-native')}).toString())
-  console.log(execSync('mklink /j shared ..\\shared', {cwd: path.join(process.cwd(), '..', 'react-native')}).toString())
+  exec('del shared', null, {cwd: path.join(process.cwd(), '.')})
+  exec('mklink /j shared ..\\shared', null, {cwd: path.join(process.cwd(), '.')})
+  exec('del shared', null, {cwd: path.join(process.cwd(), '..', 'react-native')})
+  exec('mklink /j shared ..\\shared', null, {cwd: path.join(process.cwd(), '..', 'react-native')})
+}
+
+function exec (command, env, options) {
+  if (!env) {
+    env = process.env
+  }
+  const call = execSync(command, {env: env, stdio: 'inherit', ...options})
+  call.on('close', () => {})
 }
 
 const toRun = commands[command]
@@ -122,5 +130,4 @@ if (!info.shell) {
 }
 
 console.log(`Calling: ${JSON.stringify(info, null, 2)}`)
-const call = execSync(info.shell, {env: info.env, stdio: 'inherit'})
-call.on('close', () => {})
+exec(info.shell, info.env)
