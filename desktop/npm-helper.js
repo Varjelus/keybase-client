@@ -90,6 +90,9 @@ const commands = {
   'postinstall': () => {
     if (process.platform === 'windows') {
       fixupSymlinks()
+    } else {
+      console.log('hello world')
+      return {shell: 'ls'}
     }
   }
 }
@@ -106,8 +109,8 @@ function exec (command, env, options) {
   if (!env) {
     env = process.env
   }
-  const call = execSync(command, {env: env, stdio: 'inherit', ...options})
-  call.on('close', () => {})
+
+  console.log(execSync(command, {env: env, stdio: 'inherit', encoding: 'utf8', ...options}))
 }
 
 const toRun = commands[command]
