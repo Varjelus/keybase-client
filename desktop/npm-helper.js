@@ -90,9 +90,6 @@ const commands = {
   'postinstall': () => {
     if (process.platform === 'win32') {
       fixupSymlinks()
-    } else {
-      console.log('hello world')
-      return {shell: 'ls'}
     }
   }
 }
