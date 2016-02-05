@@ -453,6 +453,18 @@ func (l *TrackChainLink) GetTrackedKeys() ([]TrackedKey, error) {
 
 	var res []TrackedKey
 
+	// If the eldest kid in this tracking statement is a PGP key, it's
+	// implicitly tracked, in addition to the "pgp_keys" section that follows.
+	eldestKeyJSON := l.payloadJSON.AtPath("body.track.key")
+	eldestTrackedKey, err := trackedKeyFromJSON(eldestKeyJSON)
+	if err != nil {
+		return nil, err
+	}
+	if eldestTrackedKey.Fingerprint != nil {
+		res = append(res, eldestTrackedKey)
+		set[eldestTrackedKey.KID] = true
+	}
+
 	pgpKeysJSON := l.payloadJSON.AtPath("body.track.pgp_keys")
 	if !pgpKeysJSON.IsNil() {
 		n, err := pgpKeysJSON.Len()
